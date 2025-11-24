@@ -1,10 +1,10 @@
 const mysql = require('mysql2');
 
 const db = mysql.createPool({
-  host: "sql100.infinityfree.com",   // replace
-  user: "if0_40496596",      // replace
-  password: "Z4FkVgUKRVCT",  // replace
-  database: "if0_40496596_sign_up",  // replace
+  host: "sql12.freesqldatabase.com",   // replace
+  user: "sql12809202",      // replace
+  password: "whTkDvTpMG",  // replace
+  database: "sql12809202",  // replace
   connectionLimit: 10
 });
 
