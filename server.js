@@ -205,14 +205,42 @@ db.getConnection((err, connection) => {
 });
 
 // ====================== SIGNUP ======================
+// app.post('/signup', (req, res) => {
+//     const { name, email, password } = req.body;
+//     if (!name || !email || !password)
+//         return res.status(400).json({ status: "Error", message: "Missing fields" });
+
+//     const sql = "INSERT INTO login (`name`, `email`, `password`) VALUES (?, ?, ?)";
+//     db.query(sql, [name, email, password], (err, data) => {
+//         if (err) return res.status(500).json({ status: "Error", message: err });
+
+//         const customerId = data.insertId;
+//         const tableName = `customer_${customerId}`;
+
+//         const createTableSQL = `CREATE TABLE IF NOT EXISTS ${tableName} (
+//             id INT PRIMARY KEY AUTO_INCREMENT,
+//             date DATE NOT NULL,
+//             imported FLOAT DEFAULT 0,
+//             exported FLOAT DEFAULT 0
+//         )`;
+
+//         db.query(createTableSQL, (err2) => {
+//             if (err2) return res.status(500).json({ status: "Error", message: err2 });
+//             return res.json({ status: "Success", userId: customerId });
+//         });
+//     });
+// });
+
 app.post('/signup', (req, res) => {
     const { name, email, password } = req.body;
-    if (!name || !email || !password)
-        return res.status(400).json({ status: "Error", message: "Missing fields" });
 
     const sql = "INSERT INTO login (`name`, `email`, `password`) VALUES (?, ?, ?)";
     db.query(sql, [name, email, password], (err, data) => {
-        if (err) return res.status(500).json({ status: "Error", message: err });
+
+        if (err) {
+            console.error("Signup INSERT error:", err);
+            return res.status(500).json({ status: "Error", message: err });
+        }
 
         const customerId = data.insertId;
         const tableName = `customer_${customerId}`;
@@ -225,11 +253,17 @@ app.post('/signup', (req, res) => {
         )`;
 
         db.query(createTableSQL, (err2) => {
-            if (err2) return res.status(500).json({ status: "Error", message: err2 });
+            if (err2) {
+                console.error("Table creation error:", err2);
+                return res.status(500).json({ status: "Error", message: err2 });
+            }
+
             return res.json({ status: "Success", userId: customerId });
         });
     });
 });
+
+
 
 // ====================== LOGIN ======================
 app.post('/login', (req, res) => {
