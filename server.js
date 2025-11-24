@@ -186,11 +186,11 @@ app.use(cors());
 
 // ====================== DATABASE CONNECTION ======================
 const db = mysql.createPool({
-    host: "sqlXXX.epizy.com",           // CHANGE
-    user: "epiz_XXXXXXXX",              // CHANGE
-    password: "YOUR_PASSWORD",          // CHANGE
-    database: "epiz_XXXXXXXX_signup",   // CHANGE
-    connectionLimit: 10
+  host: "sql100.infinityfree.com",   // replace
+  user: "if0_40496596",      // replace
+  password: "Z4FkVgUKRVCT",  // replace
+  database: "if0_40496596_sign_up",  // replace
+  connectionLimit: 10
 });
 
 // Test connection
