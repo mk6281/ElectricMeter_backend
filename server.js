@@ -190,6 +190,7 @@ const db = mysql.createPool({
   user: "sql12809202",      // replace
   password: "whTkDvTpMG",  // replace
   database: "sql12809202",  // replace
+  port: 3306,
   connectionLimit: 10
 });
 
@@ -237,6 +238,25 @@ app.post('/login', (req, res) => {
         if (err) return res.json({ status: "Error" });
         if (data.length > 0) return res.json({ status: "Success", user: data[0] });
         return res.json({ status: "Failed" });
+    });
+});
+
+app.post('/customers', (req, res) => {
+    const sql = "SELECT * FROM customers WHERE `email` = ? AND `password` = ?";
+
+    db.query(sql, [req.body.email, req.body.password], (err, data) => {
+        if (err) {
+            return res.json({ status: "Error" });
+        }
+        if (data.length > 0) {
+            return res.json({
+                status: "Success",
+                user: data[0]   // return entire user details
+            });
+        } else {
+            console.log("Login failed for email:", req.body.email);
+            return res.json({ status: "Failed" });
+        }
     });
 });
 
@@ -361,6 +381,8 @@ app.get('/toggle/:name', (req, res) => {
     const state = customerStates[name] || 0;
     res.json({ status: "Success", state });
 });
+
+
 
 // ====================== START SERVER ======================
 app.listen(8081, () => {
