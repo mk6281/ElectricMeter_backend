@@ -344,23 +344,42 @@ app.get('/registerDevice', (req, res) => {
 });
 
 // ====================== TOGGLE DEVICE ======================
+// app.post('/toggleDevice', (req, res) => {
+//     const { customerId, state } = req.body;
+
+//     if (!customerId || state === undefined)
+//         return res.status(400).json({ status: "Error", message: "Missing customerId or state" });
+
+//     const sql = "SELECT device_ip FROM login WHERE id = ?";
+//     db.query(sql, [customerId], (err, result) => {
+//         if (err) return res.status(500).json({ status: "Error", message: err });
+//         if (result.length === 0 || !result[0].device_ip)
+//             return res.status(404).json({ status: "Error", message: "Device not registered" });
+
+//         const deviceIp = result[0].device_ip;
+
+//         axios.post(`http://${deviceIp}/toggle`, { state })
+//             .then(() => res.json({ status: "Success", message: `Signal sent to device ${deviceIp}` }))
+//             .catch(err2 => res.status(500).json({ status: "Error", message: err2.message }));
+//     });
+// });
 app.post('/toggleDevice', (req, res) => {
     const { customerId, state } = req.body;
 
     if (!customerId || state === undefined)
         return res.status(400).json({ status: "Error", message: "Missing customerId or state" });
 
-    const sql = "SELECT device_ip FROM login WHERE id = ?";
-    db.query(sql, [customerId], (err, result) => {
+    // Update state in customerStates
+    const nameSql = "SELECT name FROM login WHERE id = ?";
+    db.query(nameSql, [customerId], (err, result) => {
         if (err) return res.status(500).json({ status: "Error", message: err });
-        if (result.length === 0 || !result[0].device_ip)
-            return res.status(404).json({ status: "Error", message: "Device not registered" });
+        if (result.length === 0)
+            return res.status(404).json({ status: "Error", message: "User not found" });
 
-        const deviceIp = result[0].device_ip;
+        const name = result[0].name;
+        customerStates[name] = state;  // <-- THIS LINE IS CRUCIAL
 
-        axios.post(`http://${deviceIp}/toggle`, { state })
-            .then(() => res.json({ status: "Success", message: `Signal sent to device ${deviceIp}` }))
-            .catch(err2 => res.status(500).json({ status: "Error", message: err2.message }));
+        res.json({ status: "Success", message: `Toggle state updated for ${name}` });
     });
 });
 
