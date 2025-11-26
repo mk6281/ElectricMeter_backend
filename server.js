@@ -245,12 +245,16 @@ app.post('/signup', (req, res) => {
         const customerId = data.insertId;
         const tableName = `customer_${customerId}`;
 
-        const createTableSQL = `CREATE TABLE IF NOT EXISTS ${tableName} (
-            id INT PRIMARY KEY AUTO_INCREMENT,
-            date DATE NOT NULL,
-            imported FLOAT DEFAULT 0,
-            exported FLOAT DEFAULT 0
-        )`;
+        const createTableSQL = `
+    CREATE TABLE IF NOT EXISTS ${tableName} (
+        id INT NOT NULL AUTO_INCREMENT,
+        date DATETIME NOT NULL,
+        imported FLOAT DEFAULT 0,
+        exported FLOAT DEFAULT 0,
+        PRIMARY KEY (id)
+    )
+`;
+
 
         db.query(createTableSQL, (err2) => {
             if (err2) {
