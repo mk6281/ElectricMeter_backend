@@ -380,8 +380,9 @@ app.get('/energy', (req, res) => {
         const tableName = `customer_${customerId}`;
         const imported = parseFloat(energy) >= 0 ? parseFloat(energy) : 0;
         const exported = parseFloat(energy) < 0 ? Math.abs(parseFloat(energy)) : 0;
-
-        const insertSQL = `INSERT INTO ${tableName} (date, imported, exported) VALUES (CURDATE(), ?, ?)`;
+      
+const insertSQL =
+    `INSERT INTO ${tableName} (date, imported, exported) VALUES (NOW(), ?, ?)`;
         db.query(insertSQL, [imported, exported], (err2) => {
             if (err2) return res.status(500).json({ status: "Error", message: err2 });
             res.json({ status: "Success", customerId, table: tableName, imported, exported });
