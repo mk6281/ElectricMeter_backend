@@ -185,23 +185,23 @@ app.use(express.json());
 app.use(cors());
 
 // ====================== DATABASE CONNECTION ======================
-const db = mysql.createPool({
-  host: "30v796.h.filess.io",   // replace
-  user: "electric_meter_dividebad",      // replace
-  password: "f97a388ff09a8b79a24b4c929227500fc8dcde19",  // replace
-  database: "electric_meter_dividebad",  // replace
-  port: 61032,
-  connectionLimit: 10
-});
-
 // const db = mysql.createPool({
-//   host: "sql12.freesqldatabase.com",   // replace
-//   user: "sql12809202",      // replace
-//   password: "whTkDvTpMG",  // replace
-//   database: "sql12809202",  // replace
-//   port: 3306,
+//   host: "30v796.h.filess.io",   // replace
+//   user: "electric_meter_dividebad",      // replace
+//   password: "f97a388ff09a8b79a24b4c929227500fc8dcde19",  // replace
+//   database: "electric_meter_dividebad",  // replace
+//   port: 61032,
 //   connectionLimit: 10
 // });
+
+const db = mysql.createPool({
+  host: "sql12.freesqldatabase.com",   // replace
+  user: "sql12811293",      // replace
+  password: "drFhL2v8hN",  // replace
+  database: "sql12811293",  // replace
+  port: 3306,
+  connectionLimit: 10
+});
 
 // Test connection
 db.getConnection((err, connection) => {
